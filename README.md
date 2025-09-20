@@ -148,18 +148,38 @@ Create a `config.json` file in the `automation/` directory:
 
 ## 📦 Tech Stack
 
-- **Languages:** PHP, HTML, CSS, JavaScript, Python
-- **Frameworks/Libraries:** 
-  - [Tailwind CSS](https://tailwindcss.com/) (via CDN)
-  - [Font Awesome](https://fontawesome.com/) (icons)
-  - [Chart.js](https://www.chartjs.org/) (statistics/visualizations)
-  - [Bootstrap 5](https://getbootstrap.com/) (used in some components)
-  - [PHPMailer](https://github.com/PHPMailer/PHPMailer) (email notifications)
-  - [Tweepy](https://www.tweepy.org/) (Twitter API integration)
-- **Database:** MySQL
-- **Tools:** 
-  - Web server: Apache or Nginx
-  - Version control: Git & GitHub
+- **Languages:** PHP, HTML5, CSS3, JavaScript (ES6+), Python  
+
+- **Frameworks & Libraries:**  
+  - [Tailwind CSS](https://tailwindcss.com/) (utility-first CSS)  
+  - [Bootstrap 5](https://getbootstrap.com/) (UI components)  
+  - [Font Awesome](https://fontawesome.com/) (icons)  
+  - [Chart.js](https://www.chartjs.org/) (data visualization)  
+  - [PHPMailer](https://github.com/PHPMailer/PHPMailer) (email notifications)  
+  - [Tweepy](https://www.tweepy.org/) (Twitter API integration)  
+
+- **Database:** MySQL (8.0+)  
+
+- **APIs & Integrations:**  
+  - Twitter API v2 (automated posting & social integration)  
+  - SMTP/Email API (transactional notifications)  
+  - Geolocation API (browser-based location services)  
+
+- **Automation & Scripting:**  
+  - Python (automation & scripting)  
+  - Tweepy (Twitter API integration)  
+  - mysql-connector-python (MySQL database connector)  
+  - smtplib (SMTP email automation)  
+
+- **Development Tools:**  
+  - Git & GitHub (version control)  
+  - Composer (PHP dependency management)  
+
+- **Deployment & Infrastructure:**  
+  - Apache / Nginx (web servers)  
+  - cron / Task Scheduler (automation & scheduled jobs)  
+  - phpMyAdmin / Adminer (database management)  
+
 
 ---
 
