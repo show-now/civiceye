@@ -4,6 +4,10 @@
 
 ---
 
+Demo: [https://manager.ct.ws](https://manager.ct.ws)
+
+This is a demo link hosted on a free hosting server. Some features, such as email and certain functionalities, may be missing or limited due to the restrictions of free hosting.
+
 ## 🚀 Setup and Installation Guide
 
 ### Prerequisites
@@ -91,6 +95,7 @@ civiceye/
 ├── close.php                    # Script for closing issues
 ├── db.php                       # Main DB connection
 ├── hall_of_fame.php             # Community leaderboard
+├── .htaccess                    # configuration of website-access 
 ├── if0_37947537_hackathon1.sql  # MySQL schema
 ├── index.php                    # Public homepage
 ├── report_complaint.php         # Citizen report submission
