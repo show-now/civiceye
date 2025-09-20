@@ -1,0 +1,16 @@
+{
+    "db_host": "localhost",
+    "db_user": "civiceye_user",
+    "db_password": "db_password",
+    "db_name": "civiceye_db",
+    
+    "twitter_api_key": "twitter_api_key",
+    "twitter_api_secret": "twitter_api_secret",
+    "twitter_access_token": "twitter_access_token",
+    "twitter_access_secret": "twitter_access_secret",
+    
+    "smtp_server": "smtp.gmail.com",
+    "smtp_port": 587,
+    "email_user": "example@gmail.com",
+    "email_password": "email_password"
+}
