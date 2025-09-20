@@ -1,6 +1,8 @@
 # CivicEye
 
-**CivicEye** is a lightweight public grievance portal that enables citizens to report civic issues and track their resolution. The platform offers a transparent, collaborative process for engaging with authorities and improving communities.
+**CivicEye** is a comprehensive public grievance portal that empowers citizens to report civic issues and track their resolution. It provides a transparent interface for citizens, administrators, and municipal authorities to collaborate and improve their communities through efficient issue reporting, management, and resolution tracking.
+
+---
 
 ## 🚀 Setup and Installation Guide
 
@@ -8,6 +10,8 @@
 - PHP 7.x or higher
 - MySQL/MariaDB
 - Web server (Apache/Nginx recommended)
+- Python 3.6+ (for automation scripts)
+- [PHPMailer](https://github.com/PHPMailer/PHPMailer) library (included or install via Composer)
 
 ### Installation Steps
 
@@ -17,78 +21,227 @@
    cd civiceye
    ```
 
-2. **Configure Database**
-   - Edit `db.php` with your MySQL credentials:
+2. **Install PHPMailer**
+   - If not already present, install via Composer:
+     ```bash
+     composer require phpmailer/phpmailer
+     ```
+   - Or, download PHPMailer and place it in a `phpmailer/` directory at the project root.
+
+3. **Configure Database**
+   - Edit every `db.php` file (in root, `adminstrator/`, `municipality/`) with your MySQL credentials:
      ```php
      $servername = "your_db_server";
      $username = "your_db_user";
      $password = "your_db_password";
      $dbname = "your_db_name";
      ```
-   - Import the provided SQL schema (if available) to your MySQL database.
+   - Import `if0_37947537_hackathon1.sql` into your MySQL server to set up the database schema.
 
-3. **Set Up Web Server**
+4. **Set Up Web Server**
    - Place the project in your web server's root directory.
-   - Make sure the server can write to any `uploads/` directories (if required).
+   - Ensure write permissions for any file upload directories.
 
-4. **Access the Application**
-   - Open `http://localhost/civiceye` in your browser.
+5. **Configure Automation Script**
+   - Install required Python packages:
+     ```bash
+     pip install mysql-connector-python tweepy
+     ```
+   - Create `config.json` from the template below with your credentials
+   - Set up a cron job or task scheduler to run the automation weekly
+
+6. **Access the Application**
+   - Open `http://localhost/civiceye` or your server's corresponding URL in your browser.
+
+---
 
 ## 🏗️ Project Architecture Overview
 
 ```
 civiceye/
 │
-├── index.php                # Main landing page
-├── db.php                   # Database connection logic
-├── report_complaint.php     # Submit a new complaint
-├── view_complaint.php       # View complaint details
-├── hall_of_fame.php         # Highlights active contributors
-│
 ├── adminstrator/
-│   └── admin.php            # Admin dashboard and management
+│   ├── admin.php                # Admin dashboard and management
+│   ├── db.php                   # Admin-side DB connection
+│   ├── get_complaint_details.php# AJAX/fetch complaint info
+│   ├── index.php                # Admin landing page
+│   ├── login.php                # Admin login logic
+│   └── logout.php               # Admin logout logic
 │
 ├── municipality/
-│   └── issue_manager.php    # Municipality-side issue management
+│   ├── db.php                   # Municipality-side DB connection
+│   ├── index.php                # Municipality dashboard
+│   ├── issue_manager.php        # Issue tracking/management
+│   ├── login.php                # Municipality portal login
+│   ├── logout.php               # Municipality logout
+│   └── view_complaint.php       # Municipality complaint view
 │
-├── static/                  # Images, custom CSS, etc.
+├── static/
+│   ├── civiceye.png             # Branding
+│   └── civic-logo.png           # Branding
 │
-└── phpmailer/               # PHPMailer library for email notifications
+├── automation/                   # Python automation scripts
+│   ├── weekly_report.py         # Weekly Twitter and email automation
+│   ├── config.json              # Configuration file (create from template)
+│   └── weekly_report_log.json   # Automation log (auto-generated)
+│
+├── phpmailer/                   # PHPMailer library (for email notifications)
+│   └── ...                      # (PHPMailer files)
+│
+├── close.php                    # Script for closing issues
+├── db.php                       # Main DB connection
+├── hall_of_fame.php             # Community leaderboard
+├── if0_37947537_hackathon1.sql  # MySQL schema
+├── index.php                    # Public homepage
+├── report_complaint.php         # Citizen report submission
+└── view_complaint.php           # Public complaint view
 ```
 
-- **Frontend:** Mix of PHP, HTML, and Tailwind CSS for UI; Font Awesome for icons; Chart.js for statistics.
-- **Backend:** PHP for routing, logic, and database interactions.
-- **Database:** MySQL handles users, complaints, and status tracking.
-- **Email:** PHPMailer used for sending notifications.
+---
+
+## 🤖 Weekly Automation Setup
+
+CivicEye includes a Python automation script that posts weekly updates to Twitter and sends summary emails to municipalities.
+
+### Configuration
+
+Create a `config.json` file in the `automation/` directory:
+
+```json
+{
+    "db_host": "localhost",
+    "db_user": "civiceye_user",
+    "db_password": "db_password",
+    "db_name": "civiceye_db",
+    
+    "twitter_api_key": "twitter_api_key",
+    "twitter_api_secret": "twitter_api_secret",
+    "twitter_access_token": "twitter_access_token",
+    "twitter_access_secret": "twitter_access_secret",
+    
+    "smtp_server": "smtp.gmail.com",
+    "smtp_port": 587,
+    "email_user": "example@gmail.com",
+    "email_password": "email_password"
+}
+```
+
+### Scheduling the Automation
+
+**Linux/Mac (cron):**
+```bash
+# Run every Monday at 9 AM
+0 9 * * 1 /usr/bin/python3 /path/to/civiceye/automation/weekly_report.py
+```
+
+**Windows (Task Scheduler):**
+- Create a new task that runs weekly
+- Action: Start a program → Python executable
+- Arguments: Path to weekly_report.py
+
+### Twitter API Setup
+1. Apply for a Twitter Developer account at https://developer.twitter.com/
+2. Create a new app and generate API keys
+3. Add these keys to your config.json file
+
+---
 
 ## 📦 Tech Stack
 
-- **Languages:** PHP, HTML, CSS, JavaScript
+- **Languages:** PHP, HTML, CSS, JavaScript, Python
 - **Frameworks/Libraries:** 
   - [Tailwind CSS](https://tailwindcss.com/) (via CDN)
   - [Font Awesome](https://fontawesome.com/) (icons)
   - [Chart.js](https://www.chartjs.org/) (statistics/visualizations)
   - [Bootstrap 5](https://getbootstrap.com/) (used in some components)
   - [PHPMailer](https://github.com/PHPMailer/PHPMailer) (email notifications)
+  - [Tweepy](https://www.tweepy.org/) (Twitter API integration)
 - **Database:** MySQL
 - **Tools:** 
   - Web server: Apache or Nginx
   - Version control: Git & GitHub
 
-## 📝 Code and Functionality Description
+---
 
-- **`index.php`**: The public homepage. Explains how CivicEye works, shows statistics, and links to main features.
-- **`report_complaint.php`**: Allows users to submit civic issues, including details and images. Geolocation can be recorded.
-- **`view_complaint.php`**: Displays detailed information about a complaint, including status, images, and updates.
-- **`hall_of_fame.php`**: Showcases top contributors and the most impactful resolutions.
-- **`adminstrator/admin.php`**: Admin dashboard to manage complaints, analytics, and user management.
-- **`municipality/issue_manager.php`**: Municipality interface for tracking, managing, and resolving complaints.
-- **`db.php`**: Handles all database connections and credentials.
-- **`phpmailer/`**: Contains the PHPMailer library, used for sending automated email notifications regarding complaint status and updates.
+## 📝 File-by-File Functionality
+
+### Root Directory Files
+- **index.php**: Public landing page with project overview, statistics, and feature links.
+- **db.php**: MySQL connection logic for the public side.
+- **report_complaint.php**: Form for users to submit civic issues with details and optional images. Uses PHPMailer to notify administrators/authorities.
+- **view_complaint.php**: Detailed view for individual complaints including status, images, and updates.
+- **hall_of_fame.php**: Shows top contributors and successfully resolved cases (community leaderboard).
+- **close.php**: Script for marking complaints as closed.
+- **if0_37947537_hackathon1.sql**: Complete SQL schema for all tables, users, complaints, and relationships.
+
+### `adminstrator/` Directory
+- **admin.php**: Admin dashboard for viewing/managing all complaints, users, and analytics.
+- **db.php**: MySQL connection logic specifically for the admin panel.
+- **get_complaint_details.php**: Fetches complaint details (typically for AJAX requests in the admin panel).
+- **index.php**: Admin landing/dashboard page.
+- **login.php**: Admin authentication system.
+- **logout.php**: Admin logout functionality.
+
+### `municipality/` Directory
+- **index.php**: Municipality dashboard for tracking assigned complaints.
+- **issue_manager.php**: Main interface for resolving and updating complaints (municipality-side management).
+- **view_complaint.php**: Detailed complaint view for municipality users.
+- **db.php**: MySQL connection logic for municipality panel.
+- **login.php**: Municipality user authentication.
+- **logout.php**: Municipality user logout.
+
+### `automation/` Directory
+- **weekly_report.py**: Python script for automated weekly Twitter posts and municipality emails.
+- **config.json**: Configuration file for automation (database, Twitter, and email settings).
+- **weekly_report_log.json**: Log file of automation runs (auto-generated).
+
+### `static/` Directory
+- **civiceye.png**, **civic-logo.png**: Branding and logo assets.
+
+### `phpmailer/` Directory
+- **PHPMailer files**: Email notification library used to send automated emails for complaint submissions, status updates, and notifications to users and staff.
+
+---
+
+## ✉️ Email Notification Integration
+
+- **PHPMailer** is integrated throughout the application for automated email notifications.
+- **Python automation** sends weekly summary emails to municipalities with statistics.
+- Emails are triggered when:
+  - A new complaint is submitted (notifications to administrators/municipal officers)
+  - Complaint status is updated (notifications to the submitting user)
+  - Weekly summaries are generated (to municipalities)
+  - Other significant events occur in the complaint lifecycle
+- To configure PHPMailer, edit the email settings in relevant PHP files (typically in `report_complaint.php`, admin/municipality files, or a dedicated mail helper).
+
+---
 
 ## 🔗 Source Code
 
-GitHub: [https://github.com/show-now/civiceye](https://github.com/show-now/civiceye)
+GitHub Repository: [https://github.com/show-now/civiceye](https://github.com/show-now/civiceye)
+
+---
+
+## 💡 Key Features
+
+- **Citizen Reporting**: Easy-to-use form for reporting civic issues with geolocation support
+- **Transparent Tracking**: Real-time status updates and resolution tracking
+- **Multi-tier Access**: Separate interfaces for citizens, administrators, and municipal authorities
+- **Email Notifications**: Automated updates for all stakeholders
+- **Social Media Integration**: Weekly Twitter updates for community engagement
+- **Community Engagement**: Hall of Fame to recognize active contributors
+- **Data Visualization**: Charts and statistics for better insights
+- **Automated Reporting**: Weekly summaries via Twitter and email
+
+---
+
+## 🚀 Deployment Notes
+
+1. Ensure all file permissions are set correctly for uploads and logs
+2. Set up proper cron jobs for the automation scripts
+3. Configure email settings for both PHP and Python components
+4. Set up Twitter API credentials for social media integration
+5. Regularly backup the database and log files
 
 ---
 
