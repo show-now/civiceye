@@ -1,0 +1,62 @@
+RewriteEngine On
+
+<Files config.php>
+    Order Deny,Allow
+    Deny from all
+</Files>
+
+# Redirect to HTTPS if not on
+RewriteCond %{HTTPS} !=on
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+# Remove .php file extension
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule ^(.*)$ $1.php [L]
+
+# Block admin, users, uploads directory from search engine
+<FilesMatch "^(admin|users|uploads)">
+    # Block access from search engines
+    Header set X-Robots-Tag "noindex, nofollow"
+
+    # Deny access to all users
+    Order deny,allow
+    Deny from all
+</FilesMatch>
+
+# Block nav.php and l.php from search engine
+<FilesMatch "^(nav|l)\.php$">
+    # Block access from search engines
+    Header set X-Robots-Tag "noindex, nofollow"
+
+    # Deny access to all users
+    Order deny,allow
+    Deny from all
+</FilesMatch>
+
+# Block logo.png and logo1.png from search engine
+<FilesMatch "^(logo|logo1)\.png$">
+    # Block access from search engines
+    Header set X-Robots-Tag "noindex, nofollow"
+
+    # Deny access to search engine crawlers
+    RewriteEngine on
+    RewriteCond %{HTTP_USER_AGENT} (googlebot|bingbot|yahoo|msnbot) [NC]
+    RewriteRule ^ - [F]
+
+    # Allow access to regular users
+    Order deny,allow
+    Allow from all
+</FilesMatch>
+
+
+# Error handling
+ErrorDocument 404 /404.php
+ErrorDocument 400 /error?error_code=400
+ErrorDocument 401 /error?error_code=401
+ErrorDocument 403 /error?error_code=403
+ErrorDocument 404 /error?error_code=404
+ErrorDocument 500 /error?error_code=500
+ErrorDocument 501 /error?error_code=501
+ErrorDocument 502 /error?error_code=502
+ErrorDocument 503 /error?error_code=503
+ErrorDocument 504 /error?error_code=504
