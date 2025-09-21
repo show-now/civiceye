@@ -270,4 +270,18 @@ GitHub Repository: [https://github.com/show-now/civiceye](https://github.com/sho
 
 ---
 
+## Demo
+### Overall View
+https://github.com/user-attachments/assets/19318678-2012-4048-903b-2ef772ac8ff1
+
+### Citizen Platform
+https://github.com/user-attachments/assets/e31353be-a6f1-4631-8087-d32108b2e2e2
+
+### Admin Console
+https://github.com/user-attachments/assets/2a38ed65-119f-4cad-a8cf-9091c6284d03
+
+### Municipality Platform
+
+
+
 *For questions, contributions, or issues, please open an issue on the GitHub repository!*
